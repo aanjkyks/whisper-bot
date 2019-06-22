@@ -33,7 +33,7 @@ async def on_message(message):
                 await member.add_roles(role)
             await channel.send(member.mention + " твой ник был изменён на: `" + str(
                 message.content) + "` и тебе выдали роль " + role.name)
-        else:
+        elif message.author.id != 302769321611100160:
             await message.channel.purge(limit=1)
 
 
