@@ -27,7 +27,7 @@ async def on_message(message):
         if str(message.content).endswith("KSTA"):
             member = message.author
             role = get(guild.roles, name=TAG)
-            # await member.edit(nick=message.content)
+            await member.edit(nick=message.content)
             if (role in member.roles) != 1:
                 await member.add_roles(role)
             await channel.send(
