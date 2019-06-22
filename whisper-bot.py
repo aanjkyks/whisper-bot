@@ -31,8 +31,8 @@ async def on_message(message):
             await member.edit(nick=message.content)
             if (role in member.roles) != 1:
                 await member.add_roles(role)
-            await channel.send(member.mention + " your name was changed to `" + str(
-                message.content) + "` and you were given a role " + role.mention)
+            await channel.send(member.mention + " твой ник был изменён на: `" + str(
+                message.content) + "` и тебе выдали роль " + role.name)
         else:
             await message.channel.purge(limit=1)
 
