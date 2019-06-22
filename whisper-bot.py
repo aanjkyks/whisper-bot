@@ -4,7 +4,6 @@ TOKEN = "NTkxNzQ4MjIxNjYwMDM3MTIx.XQ3h0g.tZeoZvrQtfo92VX4iPypChnPuzE"
 client = discord.Client()
 SERVER_ID = 302769697131069441
 ROLE_ID = 591344104642969642
-OWNER_ID = 302769321611100160
 TAG = "KSTA"
 
 
@@ -34,7 +33,7 @@ async def on_message(message):
                 await member.add_roles(role)
             await channel.send(member.mention + " твой ник был изменён на: `" + str(
                 message.content) + "` и тебе выдали роль " + role.name)
-        elif message.author.id != OWNER_ID:
+        elif message.author.id != guild.owner:
             await message.channel.purge(limit=1)
 
 
