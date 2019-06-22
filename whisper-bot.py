@@ -24,7 +24,7 @@ async def on_message(message):
     channel = message.channel
 
     if str(message.channel) in valid_channels:
-        if str(message.content).endswith("KSTA"):
+        if str(message.content).endswith(TAG):
             member = message.author
             role = get(guild.roles, name=TAG)
             if message.author != guild.owner:
