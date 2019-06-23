@@ -6,6 +6,7 @@ BETA_TOKEN = "NTkyMTE1NDM0NjQ4NjMzMzc3.XQ6ofQ.VyiD2DCfIGw4LeJHo7Frstu7YWw"
 client = discord.Client()
 TAG = "KSTA"
 
+
 async def on_ksta(message):
     guild = message.guild
     valid_channels = ["ksta"]
@@ -17,12 +18,20 @@ async def on_ksta(message):
             role = get(guild.roles, name=TAG)
             if member != guild.owner:
                 await member.edit(nick=message.content)
-            if (role in member.roles) != 1:
+            if (role in member.roles) == False:
                 await member.add_roles(role)
             await channel.send(
                 member.mention + " твой ник был изменён на: `" + member.display_name + "` и тебе выдали роль " + role.name)
         elif message.author != guild.owner:
             await message.channel.purge(limit=1)
+
+
+async def send_online():
+    guilds = client.guilds
+    for guild in guilds:
+        channel = get(guild.channels, name="hello")
+        await channel.send("ONLINE")
+
 
 @client.event
 async def on_ready():
@@ -30,6 +39,7 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
+    await send_online()
 
 
 @client.event
@@ -39,6 +49,12 @@ async def on_message(message):
         return
     await on_ksta(message)
 
+
+@client.event
+async def on_member_remove(member):
+    guild = member.guild
+    channel = get(guild.channels, name="hello")
+    await channel.send(member.mention + "has left")
 
 
 client.run(TOKEN)
