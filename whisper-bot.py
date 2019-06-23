@@ -24,6 +24,7 @@ async def on_ksta(message):
                 member.mention + " твой ник был изменён на: `" + member.display_name + "` и тебе выдали роль " + role.name)
         elif message.author != guild.owner:
             await message.channel.purge(limit=1)
+            await message.author.send("Для получения роли напиши свой никнейм Fortnite на канале ksta. Пример: ``Ник => Ник KSTA``")
 
 
 async def send_online():
