@@ -1,40 +1,37 @@
-import discord
+from discord.ext import commands
 from discord.utils import get
 
 TOKEN = "NTkxNzQ4MjIxNjYwMDM3MTIx.XQ3h0g.tZeoZvrQtfo92VX4iPypChnPuzE"
 BETA_TOKEN = "NTkyMTE1NDM0NjQ4NjMzMzc3.XQ6ofQ.VyiD2DCfIGw4LeJHo7Frstu7YWw"
-client = discord.Client()
+bot = commands.Bot(command_prefix="")
 TAG = "KSTA"
 
 
 async def on_ksta(message):
-    guild = message.guild
     valid_channels = ["ksta"]
-    channel = message.channel
-
+    role = get(message.guild.roles, name=TAG)
+    member = message.author
     if str(message.channel) in valid_channels:
-        if str(message.content).endswith(TAG):
-            member = message.author
+        if member == message.guild.owner:
+            return
+        if message.content.endswith(TAG):
             if valid_name_length(message.content):
-                role = get(guild.roles, name=TAG)
-                if member != guild.owner:
-                    await member.edit(nick=message.content)
-                if (role in member.roles) == False:
-                    await member.add_roles(role)
-                await channel.send(
-                    member.mention + " твой ник был изменён на: `" + member.display_name + "` и тебе выдали роль " + role.name)
+                await member.add_roles(role)
+                await member.edit(nick=message.content)
+                await message.channel.send(message.author.mention + " твой ник был изменён на: `" +
+                                           message.author.display_name + "` и тебе выдали роль " + role.name)
             else:
                 await member.send("Желаемый ник слишком длинный")
                 await message.channel.purge(limit=1)
-        elif message.author != guild.owner:
+        else:
             await message.channel.purge(limit=1)
-            await message.author.send(
+            await member.send(
                 "Для получения роли напиши свой никнейм Fortnite на канале ksta. Пример: ``Ник KSTA``\n" +
                 "Если у тебя уже есть роль и ник, не пиши больше ничего :) Я всё равно всё почистию и уберу :)")
 
 
 async def send_online():
-    guilds = client.guilds
+    guilds = bot.guilds
     for guild in guilds:
         channel = get(guild.channels, name="hello")
         await channel.send("ONLINE")
@@ -44,28 +41,27 @@ def valid_name_length(name):
     return len(name) < 32
 
 
-@client.event
+@bot.event
 async def on_ready():
     print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
+    print(bot.user.name)
+    print(bot.user.id)
     print('------')
     await send_online()
 
 
-@client.event
+@bot.event
 async def on_message(message):
     # print(message.content)
-    if message.author == client.user:
+    if message.author == bot.user:
         return
     await on_ksta(message)
 
 
-@client.event
+@bot.event
 async def on_member_remove(member):
-    guild = member.guild
-    channel = get(guild.channels, name="hello")
+    channel = get(member.guild.channels, name="hello")
     await channel.send(member.mention + "has left")
 
 
-client.run(TOKEN)
+bot.run(TOKEN)
