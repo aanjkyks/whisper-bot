@@ -1,8 +1,9 @@
+from discord import ActivityType
 from discord.ext import commands
 from discord.utils import get
 
-TOKEN = "NTkxNzQ4MjIxNjYwMDM3MTIx.XRDDGQ.HoUqIoQC4sQsWHujm-NmGj0t1mw"
-BETA_TOKEN = "NTkyMTE1NDM0NjQ4NjMzMzc3.XRDDLQ.1XeBSurLxlZT5EhI1fD7yO19_Mo"
+TOKEN = "NTkxNzQ4MjIxNjYwMDM3MTIx.XRDVhw.iYuN5oCnoNTJ6jJ3asnzWEah9VA"
+BETA_TOKEN = "NTkyMTE1NDM0NjQ4NjMzMzc3.XRDVow.uLRgLUP57oNZJ_V7w483W3DcNzM"
 bot = commands.Bot(command_prefix="")
 TAG = "KSTA"
 
@@ -41,6 +42,18 @@ def valid_name_length(name):
     return len(name) < 32
 
 
+# @bot.event
+# async def on_member_update(before, after):
+#     print(after.name + " UPDATED")
+#     if after == after.guild.owner:
+#         print(after.activities)
+#         stream = get(after.activities, type=ActivityType.streaming)
+#         if stream is None:
+#             return
+#         channel = get(after.guild.channels, name="late-an")
+#         await channel.send(stream.twitch_name + " стримит прямо сейчас! " + stream.name + " Залетай! " + stream.url)
+#
+#
 @bot.event
 async def on_ready():
     print('Logged in as')
