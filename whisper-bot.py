@@ -15,7 +15,7 @@ async def on_ksta(message):
     if str(message.channel) in valid_channels:
         if str(message.content).endswith(TAG):
             member = message.author
-            if valid_name_length(message):
+            if valid_name_length(message.content):
                 role = get(guild.roles, name=TAG)
                 if member != guild.owner:
                     await member.edit(nick=message.content)
@@ -40,8 +40,8 @@ async def send_online():
         await channel.send("ONLINE")
 
 
-async def valid_name_length(name):
-    return name.length < 32
+def valid_name_length(name):
+    return len(name) < 32
 
 
 @client.event
