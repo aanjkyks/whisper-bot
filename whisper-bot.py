@@ -1,8 +1,8 @@
 from discord.ext import commands
 from discord.utils import get
 
-TOKEN = "NTkxNzQ4MjIxNjYwMDM3MTIx.XQ3h0g.tZeoZvrQtfo92VX4iPypChnPuzE"
-BETA_TOKEN = "NTkyMTE1NDM0NjQ4NjMzMzc3.XQ6ofQ.VyiD2DCfIGw4LeJHo7Frstu7YWw"
+TOKEN = "NTkxNzQ4MjIxNjYwMDM3MTIx.XRDDGQ.HoUqIoQC4sQsWHujm-NmGj0t1mw"
+BETA_TOKEN = "NTkyMTE1NDM0NjQ4NjMzMzc3.XRDDLQ.1XeBSurLxlZT5EhI1fD7yO19_Mo"
 bot = commands.Bot(command_prefix="")
 TAG = "KSTA"
 
