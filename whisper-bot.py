@@ -2,9 +2,17 @@ from discord.ext import commands, tasks
 from discord.utils import get
 from twitch import TwitchClient
 
-TOKEN = "NTkxNzQ4MjIxNjYwMDM3MTIx.XRDVhw.iYuN5oCnoNTJ6jJ3asnzWEah9VA"
-BETA_TOKEN = "NTkyMTE1NDM0NjQ4NjMzMzc3.XRDVow.uLRgLUP57oNZJ_V7w483W3DcNzM"
-TWITCH_TOKEN = "i9m0l8qx20imglck9nifgc43p6lc4b"
+def file_reader(filename):
+    file = open(filename)
+    content = file.read()
+    return content
+
+TOKEN = file_reader("token.txt")
+BETA_TOKEN = file_reader("beta-token.txt")
+TWITCH_TOKEN = file_reader("twitch-token.txt")
+
+
+
 bot = commands.Bot(command_prefix="")
 TAG = "KSTA"
 client = TwitchClient(client_id=TWITCH_TOKEN)
