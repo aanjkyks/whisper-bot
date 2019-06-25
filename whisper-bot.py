@@ -2,16 +2,16 @@ from discord.ext import commands, tasks
 from discord.utils import get
 from twitch import TwitchClient
 
+
 def file_reader(filename):
     file = open(filename)
     content = file.read()
     return content
 
+
 TOKEN = file_reader("token.txt")
 BETA_TOKEN = file_reader("beta-token.txt")
 TWITCH_TOKEN = file_reader("twitch-token.txt")
-
-
 
 bot = commands.Bot(command_prefix="")
 TAG = "KSTA"
@@ -109,4 +109,4 @@ class MyCog(commands.Cog):
 
 
 bot.add_cog(MyCog(bot))
-bot.run(TOKEN)
+bot.run(BETA_TOKEN)
