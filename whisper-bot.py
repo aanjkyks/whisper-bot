@@ -30,16 +30,20 @@ fortnite = Fortnite(FORTNITE_API_KEY)
 async def on_ksta(message):
     valid_channels = ["ksta"]
     role = get(message.guild.roles, name=TAG)
+    member_name_list = []
     member = message.author
     if str(message.channel) in valid_channels:
         if member == message.guild.owner:
             return
         if message.content.endswith(TAG):
             if valid_name_length(message.content):
-                if message.content == "BOT KSTA":
+                for mem in role.members:
+                    member_name_list.append(mem.display_name.lower())
+                if message.content.lower() in member_name_list:
                     await message.channel.purge(limit=1)
                     await message.author.send("Умный сильно?")
                     await message.author.add_roles(get(message.guild.roles, name="Black list KSTA"))
+                    return
                 try:
                     player = fortnite.player(message.content)
                 except UnknownPlayerError:
