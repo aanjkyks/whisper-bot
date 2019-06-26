@@ -41,7 +41,7 @@ async def on_ksta(message):
                     await member.add_roles(role)
                     await member.edit(nick=message.content)
                     await message.channel.send(message.author.mention + " твой ник был изменён на: `" +
-                                               message.author.display_name + "` и тебе выдали роль " + role.name)
+                                               message.content + "` и тебе выдали роль " + role.name)
                 else:
                     await message.author.send(
                         "Ник не найден. Попробуй снова, когда сможешь себя найти здесь: " +
@@ -53,8 +53,9 @@ async def on_ksta(message):
         else:
             await message.channel.purge(limit=1)
             await member.send(
-                "Для получения роли напиши свой никнейм Fortnite на канале ksta. Пример: ``Ник KSTA``\n" +
-                "Если у тебя уже есть роль и ник, не пиши больше ничего :) Я всё равно всё почистию и уберу :)")
+                "Для получения роли напиши свой никнейм Fortnite на канале " + message.channel.mention +
+                ". Пример: ``Ник KSTA``\nЕсли у тебя уже есть роль и ник, не пиши больше ничего :) Я всё равно всё "
+                "почистию и уберу :)")
 
 
 async def send_online():
