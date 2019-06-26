@@ -1,5 +1,8 @@
+import urllib.parse
+
 from discord.ext import commands, tasks
 from discord.utils import get
+from fortnite_python import Fortnite
 from twitch import TwitchClient
 
 
@@ -8,15 +11,20 @@ def file_reader(filename):
     content = file.read()
     return content
 
-
 TOKEN = file_reader("token.txt")
 BETA_TOKEN = file_reader("beta-token.txt")
 TWITCH_TOKEN = file_reader("twitch-token.txt")
+FORTNITE_API_KEY = file_reader("fortnite-token.txt")
+
+
 
 bot = commands.Bot(command_prefix="")
 TAG = "KSTA"
 client = TwitchClient(client_id=TWITCH_TOKEN)
 TWITCH_CHANNEL = get(client.search.channels('ivanwhisper'), name="ivanwhisper")
+fortnite = Fortnite(FORTNITE_API_KEY)
+
+
 
 
 async def on_ksta(message):
@@ -24,14 +32,24 @@ async def on_ksta(message):
     role = get(message.guild.roles, name=TAG)
     member = message.author
     if str(message.channel) in valid_channels:
-        if member == message.guild.owner:
-            return
+        # if member == message.guild.owner:
+        #     return
         if message.content.endswith(TAG):
             if valid_name_length(message.content):
-                await member.add_roles(role)
-                await member.edit(nick=message.content)
-                await message.channel.send(message.author.mention + " твой ник был изменён на: `" +
+                try:
+                    player = fortnite.player(message.content)
+                except:
+                    player = None
+                if player is not None:
+                    await member.add_roles(role)
+                    await member.edit(nick=message.content)
+                    await message.channel.send(message.author.mention + " твой ник был изменён на: `" +
                                            message.author.display_name + "` и тебе выдали роль " + role.name)
+                else:
+                    await message.author.send(
+                        "Ник не найден. Попробуй снова, когда сможешь себя найти здесь: https://fortnitetracker.com/profile/pc/" + urllib.parse.quote(
+                            message.content))
+                    await message.channel.purge(limit=1)
             else:
                 await member.send("Желаемый ник слишком длинный")
                 await message.channel.purge(limit=1)
@@ -109,4 +127,4 @@ class MyCog(commands.Cog):
 
 
 bot.add_cog(MyCog(bot))
-bot.run(BETA_TOKEN)
+bot.run(TOKEN)
