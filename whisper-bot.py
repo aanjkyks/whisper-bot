@@ -130,7 +130,7 @@ class MyCog(commands.Cog):
             stream = client.streams.get_stream_by_user(TWITCH_CHANNEL.id)
             if stream is not None:
                 if self.offline:
-                    channel = get(guild.channels, name=LOG_CHANNEL_NAME)
+                    channel = get(guild.channels, name="stream-an")
                     await send_stream_notification(stream, channel)
                     self.offline = False
             else:
@@ -159,7 +159,7 @@ class MyCog(commands.Cog):
                 except UnknownPlayerError:
                     player = None
                 except:
-                    channel = get(guild.channels, name="stream-an")
+                    channel = get(guild.channels, name=LOG_CHANNEL_NAME)
                     await channel.send("Error accessing fortnite-tracker API")
                     return
                 if player is None:
