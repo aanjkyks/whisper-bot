@@ -11,12 +11,11 @@ def file_reader(filename):
     content = file.read()
     return content
 
+
 TOKEN = file_reader("token.txt")
 BETA_TOKEN = file_reader("beta-token.txt")
 TWITCH_TOKEN = file_reader("twitch-token.txt")
 FORTNITE_API_KEY = file_reader("fortnite-token.txt")
-
-
 
 bot = commands.Bot(command_prefix="")
 TAG = "KSTA"
@@ -25,15 +24,13 @@ TWITCH_CHANNEL = get(client.search.channels('ivanwhisper'), name="ivanwhisper")
 fortnite = Fortnite(FORTNITE_API_KEY)
 
 
-
-
 async def on_ksta(message):
     valid_channels = ["ksta"]
     role = get(message.guild.roles, name=TAG)
     member = message.author
     if str(message.channel) in valid_channels:
-        # if member == message.guild.owner:
-        #     return
+        if member == message.guild.owner:
+            return
         if message.content.endswith(TAG):
             if valid_name_length(message.content):
                 try:
@@ -44,11 +41,11 @@ async def on_ksta(message):
                     await member.add_roles(role)
                     await member.edit(nick=message.content)
                     await message.channel.send(message.author.mention + " твой ник был изменён на: `" +
-                                           message.author.display_name + "` и тебе выдали роль " + role.name)
+                                               message.author.display_name + "` и тебе выдали роль " + role.name)
                 else:
                     await message.author.send(
-                        "Ник не найден. Попробуй снова, когда сможешь себя найти здесь: https://fortnitetracker.com/profile/pc/" + urllib.parse.quote(
-                            message.content))
+                        "Ник не найден. Попробуй снова, когда сможешь себя найти здесь: " +
+                        "https://fortnitetracker.com/profile/pc/" + urllib.parse.quote(message.content))
                     await message.channel.purge(limit=1)
             else:
                 await member.send("Желаемый ник слишком длинный")
@@ -69,7 +66,8 @@ async def send_online():
 
 async def send_stream_notification(stream, channel):
     await channel.send(
-        "@everyone " + stream.channel.display_name + " Стримит прямо сейчас! " + stream.channel.status + " Попасть на стрим можно здесь: " + stream.channel.url)
+        "@everyone " + stream.channel.display_name + " Стримит прямо сейчас! " + stream.channel.status +
+        " Попасть на стрим можно здесь: " + stream.channel.url)
 
 
 def valid_name_length(name):
