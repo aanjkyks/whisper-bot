@@ -36,6 +36,10 @@ async def on_ksta(message):
             return
         if message.content.endswith(TAG):
             if valid_name_length(message.content):
+                if message.content == "BOT KSTA":
+                    await message.channel.purge(limit=1)
+                    await message.author.send("Умный сильно?")
+                    await message.author.add_roles(get(message.guild.roles, name="Black list KSTA"))
                 try:
                     player = fortnite.player(message.content)
                 except UnknownPlayerError:
