@@ -108,6 +108,15 @@ async def on_message(message):
 
 
 @bot.event
+async def on_message_delete(message):
+    print("message deleted")
+    channel = get(message.guild.channels, name=LOG_CHANNEL_NAME)
+    await channel.send(
+        "Message: `" + message.content + "` by " + message.author.mention + " was deleted from " +
+        message.channel.mention)
+
+
+@bot.event
 async def on_member_remove(member):
     channel = get(member.guild.channels, name="hello")
     await channel.send(member.mention + "has left")
