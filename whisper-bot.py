@@ -29,12 +29,15 @@ fortnite = Fortnite(FORTNITE_API_KEY)
 
 async def on_ksta(message):
     valid_channels = ["ksta"]
-    role = get(message.guild.roles, name=TAG)
     member_name_list = []
     member = message.author
     if str(message.channel) in valid_channels:
+        role = get(message.guild.roles, name=TAG)
         if member == message.guild.owner:
             return
+        if message.author in role.members and message.author.display_name == message.content:
+            await message.channel.purge(limit=1)
+            await message.author.send("У тебя уже есть роль, что тебе ещё надо?")
         if message.content.endswith(TAG):
             if valid_name_length(message.content):
                 for mem in role.members:
@@ -43,6 +46,8 @@ async def on_ksta(message):
                     await message.channel.purge(limit=1)
                     await message.author.send("Умный сильно?")
                     await message.author.add_roles(get(message.guild.roles, name="Black list KSTA"))
+                    await message.author.remove_roles(get(message.guild.roles, name="KSTA"))
+                    await message.author.edit(nick="")
                     return
                 try:
                     player = fortnite.player(message.content)
@@ -63,7 +68,7 @@ async def on_ksta(message):
                         "https://fortnitetracker.com/profile/pc/" + urllib.parse.quote(message.content))
                     await message.channel.purge(limit=1)
             else:
-                await member.send("Желаемый ник слишком длинный")
+                await member.send("Для твоего желаемого ника МЕСТА МАЛО!")
                 await message.channel.purge(limit=1)
         else:
             await message.channel.purge(limit=1)
@@ -119,7 +124,7 @@ async def on_message_delete(message):
 @bot.event
 async def on_member_remove(member):
     channel = get(member.guild.channels, name="hello")
-    await channel.send(member.mention + "has left")
+    await channel.send(str(member) + " has left")
 
 
 class MyCog(commands.Cog):
@@ -149,7 +154,7 @@ class MyCog(commands.Cog):
     async def before_notifier(self):
         await self.bot.wait_until_ready()
 
-    @tasks.loop(hours=5)
+    @tasks.loop(hours=10)
     async def check_role_members(self):
         for guild in self.bot.guilds:
             channel = get(guild.channels, name=LOG_CHANNEL_NAME)
